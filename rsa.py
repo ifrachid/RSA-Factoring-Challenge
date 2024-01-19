@@ -1,5 +1,4 @@
 import sys
-import math
 
 def gcd(a, b):
     while b:
@@ -10,6 +9,7 @@ def pollards_rho(n):
     x = 2
     y = 2
     d = 1
+
     f = lambda x: (x**2 + 1) % n
 
     while d == 1:
@@ -19,21 +19,13 @@ def pollards_rho(n):
 
     return d
 
-def is_prime(num):
-    if num < 2:
-        return False
-    for i in range(2, int(math.sqrt(num)) + 1):
-        if num % i == 0:
-            return False
-    return True
-
 def factorize_rsa(n):
     factors = []
-    while not is_prime(n):
+    while n > 1:
         factor = pollards_rho(n)
         factors.append(factor)
         n //= factor
-    factors.append(n)
+
     return factors
 
 def main():
