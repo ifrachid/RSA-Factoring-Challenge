@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/python3
+
+import sys
+import time
+
 # is a factors challenge
 
 check_factor()
