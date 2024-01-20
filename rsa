@@ -1,55 +1,48 @@
-#!/usr/bin/python3
+#!/usr/bin/env bash
+#is a challenge
+check_factor()
+{
+	if [ $# -ne 3 ];
+        then
+                args=("$@")
+                count=0
+                num2=1
+                for a in ${args[*]};
+                do
+                        if [ $count -gt 1 ];
+                        then
+                                num2=$(echo $a*$num2 | bc)
+                        fi
+                        count=$((count + 1))
+                done
+        else
+                num2=$3
+        fi
 
-import sys
-import math
+        num1=$2
+        num=$(echo "$1" | tr ':' '=')
 
-def gcd(a, b):
-    while b:
-        a, b = b, a % b
-    return a
+        result=$(echo "if($num2 > $num1) 1 else 0" | bc)
+	        if ((result == 1)); then
+		        numcp=$num1
+		        num1=$num2
+		        num2=$numcp
+                fi
 
-def pollards_rho(n):
-    x = 2
-    y = 2
-    d = 1
-    f = lambda x: (x**2 + 1) % n
+        echo "$num$num1*$num2"
+}
 
-    while d == 1:
-        x = f(x)
-        y = f(f(y))
-        d = gcd(abs(x - y), n)
+if [ $# -ne 1 ]
+then
+        echo 'Usage: rsa <file>'
+        exit 1
+else
 
-    return d
+        while read i
+        do
 
-def is_prime(num):
-    if num < 2:
-        return False
-    for i in range(2, int(math.sqrt(num)) + 1):
-        if num % i == 0:
-            return False
-    return True
+                result=$(factor "$i")
+                check_factor $result
 
-def factorize_rsa(n):
-    factors = []
-    while not is_prime(n):
-        factor = pollards_rho(n)
-        factors.append(factor)
-        n //= factor
-    factors.append(n)
-    return factors
-
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: {} <file>".format(sys.argv[0]))
-        sys.exit(1)
-
-    input_file = sys.argv[1]
-
-    with open(input_file, 'r') as file:
-        for line in file:
-            n = int(line.strip())
-            factors = factorize_rsa(n)
-            print("{}={}".format(n, "*".join(map(str, factors))))
-
-if __name__ == "__main__":
-    main()
+        done < "$1"
+fi
