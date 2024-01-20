@@ -1,24 +1,23 @@
 #!/usr/bin/python3
 import sys
-from check import ( cleanning, compute_prime_numbers, result)
+from prime import factor, primef, gen_primes
 
-""" Function for running the prime number forum"""
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        exit(1)
 
+    lp = []
+    with open("prime.txt", 'r') as file:
+            for line in file:
+                lp=line[:-1].split(",")
+                break
+    lp = list(map(int, lp))
 
-def rsa():
-	d = sys.argv
-	if len(d) == 2:
-		f = open(sys.argv[-1], 'r')
-		e = f.readline()
-		q = cleanning('\n', list(e))
-		while len(e) > 0:
-			w, u = compute_prime_numbers(q)
-			result(w, u, q)
-			e = f.readline()
-			if len(e) > 0:
-				q = cleanning('\n', list(e))
-		f.close()
+    lpi = []
+    with open(sys.argv[1], 'r') as file:
+        lpi = file.readlines()
+        lpi = [int(num) for num in lpi]
 
-
-if __name__ == '__main__':
-	rsa()
+    for i in lpi:
+        j = factor(i, lp)
+        print("{}={}*{}".format(i,i//j,j))
