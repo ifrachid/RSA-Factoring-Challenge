@@ -1,36 +1,24 @@
 #!/usr/bin/python3
-"""
-Factorize as many numbers as possible into
-a product of two smaller prime numbers.
-
-Functions:
-    factorize()
-
-Usage: ./rsa <file>
-    Where <file> is a file containing one natural number to factor.
-Output format: n=p*q
-    p and q are always prime numbers.
-"""
-
 import sys
-import ctypes
+from check import ( cleanning, compute_prime_numbers, result)
+
+""" Function for running the prime number forum"""
 
 
-def factorize():
-    """
-    Factorizes as many numbers as possible into
-    a product of two smaller prime numbers and print them.
-    """
+def rsa():
+	d = sys.argv
+	if len(d) == 2:
+		f = open(sys.argv[-1], 'r')
+		e = f.readline()
+		q = cleanning('\n', list(e))
+		while len(e) > 0:
+			w, u = compute_prime_numbers(q)
+			result(w, u, q)
+			e = f.readline()
+			if len(e) > 0:
+				q = cleanning('\n', list(e))
+		f.close()
 
-    c_factors = ctypes.CDLL("./lib_factors.so")
-    c_factors.find_divisor.argtypes = [ctypes.c_long]
-    with open(sys.argv[1]) as f:
-        line = f.readline()
-        while line != '':
-            num = int(line)
-            c_factors.find_divisor(num)
-            line = f.readline()
 
-
-if __name__ == "__main__":
-    factorize()
+if __name__ == '__main__':
+	rsa()
