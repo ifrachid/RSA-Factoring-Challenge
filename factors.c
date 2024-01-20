@@ -1,32 +1,33 @@
 #include <stdio.h>
 
-void factorize_number(int n) {
-    for (int i = 2; i <= n / 2; ++i) {
-        if (n % i == 0) {
-            printf("%d=%d*%d\n", n, i, n / i);
-            return;  // Assuming you only want one factorization per line
-        }
-    }
-}
+/*
+ * find_divisor - finds the smallest divisor of a given number.
+ * @num: a number to find the smallest divisor for.
+ * Return: smallest divisor if found, or 0 if the number is prime.
+ */
+int find_divisor(long int num)
+{
+	long int factor;
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <file>\n", argv[0]);
-        return 1;
-    }
+	if (num % 2 == 0)
+	{
+		printf("%lu=%lu*%i\n", num, num / 2, 2);
+		return 0;
+	}
 
-    FILE *file = fopen(argv[1], "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        return 1;
-    }
+	factor = 3;
+	while (factor * factor <= num)
+	{
+		if (num % factor == 0)
+		{
+			printf("%lu=%lu*%lu\n", num, num / factor, factor);
+			return 0;
+		}
+		else
+			factor += 2;
+	}
 
-    int number;
-    while (fscanf(file, "%d", &number) == 1) {
-        factorize_number(number);
-    }
+	printf("%lu=%lu*%i\n", num, num, 1);
 
-    fclose(file);
-
-    return 0;
+	return 0;
 }
