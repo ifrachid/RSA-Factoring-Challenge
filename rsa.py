@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import sys
 
 def gcd(a, b):
