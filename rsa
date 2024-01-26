@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import sys
-
 def prime_factors(n):
     factors = []
     # Divide by 2 as many times as possible
@@ -17,13 +16,14 @@ def prime_factors(n):
         factors.append(n)
     return factors
 
-   # Check if a file was provided as an argument
-   if len(sys.argv) != 2:
+
+# Check if a file was provided as an argument
+if len(sys.argv) != 2:
     print("Usage: factors <file>")
     sys.exit(1)
 
-   # Read the file and factorize each number
-   with open(sys.argv[1], "r") as f:
+# Read the file and factorize each number
+with open(sys.argv[1], "r") as f:
     for line in f:
         n = int(line.strip())
         factors = prime_factors(n)
