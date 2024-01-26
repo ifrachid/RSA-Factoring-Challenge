@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import sys 
-    def prime_factors(n):
+import sys
+
+def prime_factors(n):
      factors = []
 # Divide by 2 as many times as possible
     while n % 2 == 0:
