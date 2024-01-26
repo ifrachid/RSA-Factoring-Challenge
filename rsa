@@ -1,30 +1,27 @@
 #!/usr/bin/python3
 import sys
-def prime_factors(n):
-    factors = []
-    # Divide by 2 as many times as possible
-    while n % 2 == 0:
-        factors.append(2)
-        n //= 2
-    # Divide by odd numbers until n is reduced to 1
-    for i in range(3, int(n ** 0.5) + 1, 2):
-        while n % i == 0:
-            factors.append(i)
-            n //= i
-    # Add the remaining factor if it is greater than 2
-    if n > 2:
-        factors.append(n)
-    return factors
 
-# Check if a file was provided as an argument
-if len(sys.argv) != 2:
-    print("Usage: factors <file>")
-    sys.exit(1)
+def factorization():
+    """
+    Factorize RSA numbers. For each RSA number n, find prime numbers p and q such that n = p × q.
+    """
+    try:
+        files = sys.argv[1]
+        with open(files) as f:
+            for number in f:
+                number = int(number)
+                if number % 2 == 0:
+                    print("{}={}*{}".format(number, number // 2, 2))
+                    continue
+                divisor = 3
+                while divisor <= number // 2:
+                    if number % divisor == 0:
+                        print("{}={}*{}".format(number, number // divisor, divisor))
+                        break
+                    divisor += 2
+                if divisor > (number // 2):
+                    print("{}={}*{}".format(number, number, 1))
+    except IndexError:
+        print("Usage: {} <file>".format(sys.argv[0]))
 
-# Read the file and factorize each number
-with open(sys.argv[1], "r") as f:
-    for line in f:
-        n = int(line.strip())
-        factors = prime_factors(n)
-        print(f"{n}=", end="")
-        print("*".join(str(f) for f in factors))
+factorization()
