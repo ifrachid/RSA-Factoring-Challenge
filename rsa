@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import sys
-import agv
+import argv
 def prime_factors(n):
     factors = []
     # Divide by 2 as many times as possible
