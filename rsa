@@ -1,32 +1,48 @@
-#!/usr/bin/python3
-import sys
-def prime_factors(n):
-    factors = []
-    # Divide by 2 as many times as possible
-    while n % 2 == 0:
-        factors.append(2)
-        n //= 2
-    # Divide by odd numbers until n is reduced to 1
-    for i in range(3, int(n ** 0.5) + 1, 2):
-        while n % i == 0:
-            factors.append(i)
-            n //= i
-    # Add the remaining factor if it is greater than 2
-    if n > 2:
-        factors.append(n)
-    return factors
+#!/usr/bin/env bash
+#is a challenge
+check_factor()
+{
+	if [ $# -ne 3 ];
+        then
+                args=("$@")
+                count=0
+                num2=1
+                for a in ${args[*]};
+                do
+                        if [ $count -gt 1 ];
+                        then
+                                num2=$(echo $a*$num2 | bc)
+                        fi
+                        count=$((count + 1))
+                done
+        else
+                num2=$3
+        fi
 
+        num1=$2
+        num=$(echo "$1" | tr ':' '=')
 
-# Check if a file was provided as an argument
-if len(sys.argv) != 2:
-    print("Usage: factors <file>")
-    sys.exit(1)
+        result=$(echo "if($num2 > $num1) 1 else 0" | bc)
+	        if ((result == 1)); then
+		        numcp=$num1
+		        num1=$num2
+		        num2=$numcp
+                fi
 
-# Read the file and factorize each number
-with open(sys.argv[1], "r") as f:
-    for line in f:
-        n = int(line.strip())
-        factors = prime_factors(n)
-        print(f"{n}=", end="")
-        print("*".join(str(f) for f in factors))
+        echo "$num$num1*$num2"
+}
 
+if [ $# -ne 1 ]
+then
+        echo 'Usage: rsa <file>'
+        exit 1
+else
+
+        while read i
+        do
+
+                result=$(factor "$i")
+                check_factor $result
+
+        done < "$1"
+fi
